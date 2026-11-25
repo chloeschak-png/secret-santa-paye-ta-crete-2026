@@ -46,6 +46,7 @@ button:disabled{opacity:.55;cursor:default}
 .save{background:var(--fir);justify-self:start}
 @media (max-width:560px){.save{width:100%}}
 .absent{border-style:dashed;border-color:var(--gold)}
+.already{text-align:center;border:1.5px dashed var(--gold)}
 .formwrap{display:grid;gap:inherit}
 .send{text-align:center;justify-items:center}
 .send button{width:100%;max-width:420px;font-size:1.05rem;padding:15px 22px}
@@ -166,6 +167,11 @@ button:disabled{opacity:.55;cursor:default}
     <div class="dots" id="dots"></div>
   </section>
 
+  <section class="card already" id="already" hidden>
+    <h2>Tu as déjà répondu</h2>
+    <p class="msg">Merci ! Ton update et tes choix sont bien arrivés chez l'organisatrice. On ne peut répondre qu'une seule fois. Si tu veux changer quelque chose, écris directement à Chloé.</p>
+  </section>
+
   <form id="all-form" action="" method="POST" enctype="multipart/form-data" class="formwrap">
   <input type="hidden" name="_subject" value="Secret Santa : nouvelle réponse">
   <input type="hidden" name="_template" value="table">
@@ -235,6 +241,17 @@ const QUIZ = [
 /* ==================== */
 
 const $ = id => document.getElementById(id);
+
+// Une seule réponse par téléphone
+const DONE_KEY = "secret-santa-envoye";
+try { if (new URLSearchParams(location.search).get("reset") === "1") localStorage.removeItem(DONE_KEY); } catch (e) {}
+let alreadySent = false;
+try { alreadySent = !!localStorage.getItem(DONE_KEY); } catch (e) {}
+if (alreadySent) {
+  document.getElementById("all-form").hidden = true;
+  document.querySelector(".jump").hidden = true;
+  document.getElementById("already").hidden = false;
+}
 const pad = n => String(n).padStart(2, "0");
 
 // Compte à rebours

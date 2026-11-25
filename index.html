@@ -202,7 +202,7 @@ button:disabled{opacity:.55;cursor:default}
     <p class="msg">Une fois le quiz clos, vous recevrez un lien Revolut pour envoyer votre participation. Je ferai ensuite les courses pour tout le monde avec le budget récolté, d'après les résultats du quiz.</p>
   </section>
 
-  <p class="bisous">Bisous les jeunes</p>
+  
 
   <section class="card send" id="send">
     <h2>3. On envoie tout</h2>
@@ -211,7 +211,6 @@ button:disabled{opacity:.55;cursor:default}
     <p class="msg" id="send-msg" role="status"></p>
   </section>
   </form>
-
 
 </main>
 
@@ -357,7 +356,6 @@ $("u-pick").addEventListener("change", async e => {
   else $("u-msg").textContent = "";
   syncFiles();
 });
-
 
 // Étapes : enregistrer l'update, puis le quiz, puis tout envoyer
 const saved = {u: false, q: false};

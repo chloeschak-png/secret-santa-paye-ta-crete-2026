@@ -268,7 +268,7 @@ sync();
 
 // Formulaires : adresse d'envoi et retour sur la page
 $("all-form").action = FORM_URL;
-$("next-url").value = location.href.split(/[?#]/)[0] + "?envoye=1#merci";
+$("next-url").value = new URL("merci.html", location.href).href;
 if (new URLSearchParams(location.search).get("envoye")) {
   const m = $("send-msg"); m.id = "merci"; m.className = "msg ok";
   m.textContent = "Merci ! Ton update et tes choix sont bien arrivés chez l'organisatrice.";
@@ -321,7 +321,7 @@ $("all-form").addEventListener("submit", e => {
   });
   body.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
   if (!picked.length) $("u-files").disabled = true;
-  $("send-btn").disabled = true; $("send-msg").className = "msg"; $("send-msg").textContent = "Envoi en cours…";
+  $("send-btn").disabled = true; $("send-btn").textContent = "Envoi en cours…"; $("send-msg").className = "msg"; $("send-msg").textContent = picked.length ? "Envoi des photos en cours, ça peut prendre jusqu'à une minute. Ne ferme pas la page." : "Envoi en cours, ne ferme pas la page.";
 });
 
 // Photos de l'update : compression puis ajout au formulaire
@@ -331,10 +331,10 @@ function shrink(file){
   return new Promise(res => {
     const url = URL.createObjectURL(file), img = new Image();
     img.onload = () => {
-      const max = 1600, r = Math.min(1, max / Math.max(img.width, img.height));
+      const max = 1280, r = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement("canvas"); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
       c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      c.toBlob(b => { URL.revokeObjectURL(url); res(b ? new File([b], file.name.replace(/\.\w+$/, "") + ".jpg", {type: "image/jpeg"}) : file); }, "image/jpeg", .82);
+      c.toBlob(b => { URL.revokeObjectURL(url); res(b ? new File([b], file.name.replace(/\.\w+$/, "") + ".jpg", {type: "image/jpeg"}) : file); }, "image/jpeg", .75);
     };
     img.onerror = () => { URL.revokeObjectURL(url); res(file); };
     img.src = url;

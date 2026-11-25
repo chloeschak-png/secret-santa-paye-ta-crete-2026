@@ -40,6 +40,14 @@ input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
 input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,.opt:focus-within{outline:3px solid var(--gold);outline-offset:2px}
 button{font:700 1rem var(--body);border:0;border-radius:999px;padding:13px 22px;cursor:pointer;background:var(--berry);color:#fff;-webkit-tap-highlight-color:transparent}
 button:disabled{opacity:.55;cursor:default}
+.bisous{justify-self:center;font-family:var(--display);font-weight:900;font-variation-settings:"SOFT" 100,"WONK" 1;font-size:1.3rem;color:var(--berry);background:var(--soft);border:1.5px dashed var(--gold);border-radius:14px;padding:12px 26px;transform:rotate(-2deg);margin:4px 0 0}
+.state{font-size:.78rem;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.state.ok{background:var(--fir);color:var(--surface)}
+.save{background:var(--fir);justify-self:start}
+@media (max-width:560px){.save{width:100%}}
+.formwrap{display:grid;gap:inherit}
+.send{text-align:center;justify-items:center}
+.send button{width:100%;max-width:420px;font-size:1.05rem;padding:15px 22px}
 .deadline{font-weight:700;color:var(--berry);background:var(--soft);border-radius:10px;padding:10px 14px}
 
 /* hero */
@@ -157,16 +165,18 @@ button:disabled{opacity:.55;cursor:default}
     <div class="dots" id="dots"></div>
   </section>
 
+  <form id="all-form" action="" method="POST" enctype="multipart/form-data" class="formwrap">
+  <input type="hidden" name="_subject" value="Secret Santa : nouvelle réponse">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_next" id="next-url">
+  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
   <section class="card" id="update">
-    <h2>Ton update de l'année</h2>
+    <div class="row"><h2>1. Ton update de l'année</h2><span class="state" id="u-state">À remplir</span></div>
     <p class="deadline">À envoyer avant le 11 décembre</p>
-    <p class="msg">Pendant la soirée, je présenterai un diaporama avec les nouvelles de chacun. Raconte ton année en quelques points : taf, études, projets, perso, voyages. Seule l'organisatrice reçoit ce que tu écris ici.</p>
-    <form id="u-form" action="" method="POST" enctype="multipart/form-data" class="q">
-      <input type="hidden" name="_subject" value="Secret Santa : nouvel update">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" class="next-url" data-done="update">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <p class="msg">Pendant la soirée, je présenterai un diaporama avec les nouvelles de chacun. Raconte ton année en quelques points : taf, études, projets, perso, voyages. Seule l'organisatrice reçoit ce que tu écris ici. Enregistre ton update, puis remplis le quiz : tout part ensemble à la fin.</p>
+    <div class="q">
       <label class="field">Ton prénom<input type="text" id="u-name" name="Prénom" maxlength="40" required autocomplete="given-name"></label>
       <label class="field">Tes points<span class="hint">Un point par ligne.</span><textarea id="u-text" name="Update" maxlength="3000" required placeholder="Nouveau job chez…&#10;J'ai déménagé à…&#10;Mon plus beau voyage : …"></textarea></label>
       <p class="lbl">Photos <span class="hint">(facultatif, 5 maximum)</span></p>
@@ -174,31 +184,33 @@ button:disabled{opacity:.55;cursor:default}
       <input type="file" id="u-pick" accept="image/*" multiple hidden>
       <input type="file" id="u-files" name="attachment" multiple hidden>
       <div class="thumbs" id="u-thumbs"></div>
-      <button type="submit" id="u-btn">Envoyer à l'organisatrice</button>
       <p class="msg" id="u-msg" role="status"></p>
-    </form>
+      <button type="button" class="save" id="save-u">Enregistrer mon update</button>
+    </div>
   </section>
 
   <section class="card" id="quiz">
-    <h2>Le grand quiz de la soirée</h2>
+    <div class="row"><h2>2. Le grand quiz de la soirée</h2><span class="state" id="q-state">À remplir</span></div>
     <p class="msg">Coche tout ce qui te tente, autant de choix que tu veux. Tu peux aussi ajouter tes propres idées.</p>
-    <form id="q-form" action="" method="POST" class="q">
-      <input type="hidden" name="_subject" value="Secret Santa : réponses au quiz">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" class="next-url" data-done="quiz">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-      <label class="field">Ton prénom<input type="text" name="Prénom" maxlength="40" required autocomplete="given-name"></label>
-      <div id="q-body"></div>
-      <button type="submit" id="q-btn">Envoyer mes choix</button>
-      <p class="msg" id="q-msg" role="status"></p>
-    </form>
+    <div class="q" id="q-body"></div>
+    <p class="msg" id="q-msg" role="status"></p>
+    <button type="button" class="save" id="save-q">Enregistrer mes choix</button>
   </section>
+
+  <section class="card send" id="send">
+    <h2>3. On envoie tout</h2>
+    <p class="msg" id="send-hint">Enregistre d'abord ton update et tes choix, puis envoie tout d'un coup.</p>
+    <button type="submit" id="send-btn" disabled>Tout envoyer à l'organisatrice</button>
+    <p class="msg" id="send-msg" role="status"></p>
+  </section>
+  </form>
 
   <section class="card" id="courses">
     <h2>Les courses</h2>
     <p class="msg">Une fois le quiz clos, vous recevrez un lien Revolut pour envoyer votre participation. Je ferai ensuite les courses pour tout le monde avec le budget récolté, d'après les résultats du quiz.</p>
   </section>
+
+  <p class="bisous">Bisous les jeunes</p>
 </main>
 
 <script>
@@ -253,11 +265,12 @@ track.addEventListener("scroll", () => { const i = Math.round(track.scrollLeft /
 sync();
 
 // Formulaires : adresse d'envoi et retour sur la page
-document.querySelectorAll("form").forEach(f => f.action = FORM_URL);
-document.querySelectorAll(".next-url").forEach(i => i.value = location.href.split(/[?#]/)[0] + "?envoye=" + i.dataset.done + "#" + i.dataset.done);
-const done = new URLSearchParams(location.search).get("envoye");
-if (done === "update") { $("u-msg").className = "msg ok"; $("u-msg").textContent = "Merci ! Ton update est bien arrivé chez l'organisatrice."; }
-if (done === "quiz") { $("q-msg").className = "msg ok"; $("q-msg").textContent = "Merci ! Tes choix sont bien envoyés."; }
+$("all-form").action = FORM_URL;
+$("next-url").value = location.href.split(/[?#]/)[0] + "?envoye=1#merci";
+if (new URLSearchParams(location.search).get("envoye")) {
+  const m = $("send-msg"); m.id = "merci"; m.className = "msg ok";
+  m.textContent = "Merci ! Ton update et tes choix sont bien arrivés chez l'organisatrice.";
+}
 
 // Quiz
 const body = $("q-body");
@@ -295,7 +308,8 @@ function refreshQuiz(){
   });
 }
 body.addEventListener("change", refreshQuiz); refreshQuiz();
-$("q-form").addEventListener("submit", e => {
+$("all-form").addEventListener("submit", e => {
+  if (e.defaultPrevented) return;
   body.querySelectorAll("[data-collect]").forEach(h => {
     const k = h.dataset.collect;
     const vals = [...body.querySelectorAll('input[data-group="' + k + '"]:checked')].map(c => c.value);
@@ -304,7 +318,8 @@ $("q-form").addEventListener("submit", e => {
     h.value = vals.join(", ") || "-";
   });
   body.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
-  $("q-btn").disabled = true; $("q-msg").className = "msg"; $("q-msg").textContent = "Envoi…";
+  if (!picked.length) $("u-files").disabled = true;
+  $("send-btn").disabled = true; $("send-msg").className = "msg"; $("send-msg").textContent = "Envoi en cours…";
 });
 
 // Photos de l'update : compression puis ajout au formulaire
@@ -344,10 +359,53 @@ $("u-pick").addEventListener("change", async e => {
   else $("u-msg").textContent = "";
   syncFiles();
 });
-$("u-form").addEventListener("submit", () => {
-  if (!picked.length) $("u-files").disabled = true;
-  $("u-btn").disabled = true; $("u-msg").className = "msg"; $("u-msg").textContent = "Envoi…";
-});
+
+
+// Étapes : enregistrer l'update, puis le quiz, puis tout envoyer
+const saved = {u: false, q: false};
+const KEY = "secret-santa-brouillon";
+function setState(k, ok){
+  saved[k] = ok;
+  const el = $(k + "-state"); el.textContent = ok ? "Enregistré ✓" : "À remplir"; el.classList.toggle("ok", ok);
+  const both = saved.u && saved.q;
+  $("send-btn").disabled = !both;
+  $("send-hint").textContent = both ? "Tout est prêt. Tu peux encore modifier, pense juste à réenregistrer." : "Enregistre d'abord ton update et tes choix, puis envoie tout d'un coup.";
+}
+function draft(){
+  const d = {name: $("u-name").value, text: $("u-text").value, checks: [], texts: {}};
+  body.querySelectorAll("input[data-group]:checked").forEach(c => d.checks.push(c.dataset.group + "|" + c.value));
+  body.querySelectorAll('input[type=text]').forEach(i => d.texts[i.dataset.other || i.name] = i.value);
+  try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
+}
+try {
+  const d = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (d) {
+    $("u-name").value = d.name || ""; $("u-text").value = d.text || "";
+    body.querySelectorAll("input[data-group]").forEach(c => c.checked = (d.checks || []).includes(c.dataset.group + "|" + c.value));
+    body.querySelectorAll('input[type=text]').forEach(i => { const v = (d.texts || {})[i.dataset.other || i.name]; if (v) i.value = v; });
+    refreshQuiz();
+  }
+} catch (e) {}
+$("save-u").onclick = () => {
+  const name = $("u-name"), text = $("u-text");
+  if (!name.value.trim()) { name.reportValidity(); name.focus(); return; }
+  if (!text.value.trim()) { text.reportValidity(); text.focus(); return; }
+  draft(); setState("u", true);
+  $("u-msg").className = "msg ok"; $("u-msg").textContent = "Update enregistré. Passe au quiz !";
+  setTimeout(() => $("quiz").scrollIntoView({behavior: "smooth", block: "start"}), 350);
+};
+$("save-q").onclick = () => {
+  const any = body.querySelector("input[data-group]:checked") || [...body.querySelectorAll('input[type=text]')].some(i => i.value.trim());
+  if (!any) { $("q-msg").className = "msg err"; $("q-msg").textContent = "Coche au moins un choix avant d'enregistrer."; return; }
+  draft(); setState("q", true);
+  $("q-msg").className = "msg ok"; $("q-msg").textContent = "Choix enregistrés.";
+  if (!saved.u) { $("q-msg").textContent = "Choix enregistrés. Il te reste à enregistrer ton update, juste au-dessus."; return; }
+  setTimeout(() => $("send").scrollIntoView({behavior: "smooth", block: "center"}), 350);
+};
+["u-name", "u-text"].forEach(id => $(id).addEventListener("input", () => { if (saved.u) { setState("u", false); $("u-msg").className = "msg"; $("u-msg").textContent = "Modifié : pense à réenregistrer."; } }));
+body.addEventListener("input", () => { if (saved.q) { setState("q", false); $("q-msg").className = "msg"; $("q-msg").textContent = "Modifié : pense à réenregistrer."; } });
+$("all-form").addEventListener("submit", e => { if (!(saved.u && saved.q)) e.preventDefault(); }, true);
+if (new URLSearchParams(location.search).get("envoye")) { try { localStorage.removeItem(KEY); } catch (e) {} }
 </script>
 </body>
 </html>

@@ -324,7 +324,7 @@ $("all-form").addEventListener("submit", e => {
   });
   body.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
   if (!picked.length) $("u-files").disabled = true;
-  $("send-btn").disabled = true; $("send-btn").textContent = "Envoi en cours…"; $("send-msg").className = "msg"; $("send-msg").textContent = picked.length ? "Envoi des photos en cours, ça peut prendre jusqu'à une minute. Ne ferme pas la page." : "Envoi en cours, ne ferme pas la page.";
+  $("send-btn").disabled = true; $("send-btn").textContent = "Envoi en cours…"; $("send-msg").className = "msg"; $("send-msg").textContent = picked.length ? "L'envoi avec photos peut prendre jusqu'à une minute. Ne ferme pas la page, tu arriveras sur la page Merci quand c'est fini." : "L'envoi peut prendre jusqu'à 30 secondes. Ne ferme pas la page, tu arriveras sur la page Merci quand c'est fini.";
 });
 
 // Photos de l'update : compression puis ajout au formulaire

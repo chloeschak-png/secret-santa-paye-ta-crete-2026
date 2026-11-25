@@ -45,6 +45,7 @@ button:disabled{opacity:.55;cursor:default}
 .state.ok{background:var(--fir);color:var(--surface)}
 .save{background:var(--fir);justify-self:start}
 @media (max-width:560px){.save{width:100%}}
+.absent{border-style:dashed;border-color:var(--gold)}
 .formwrap{display:grid;gap:inherit}
 .send{text-align:center;justify-items:center}
 .send button{width:100%;max-width:420px;font-size:1.05rem;padding:15px 22px}
@@ -192,6 +193,9 @@ button:disabled{opacity:.55;cursor:default}
   <section class="card" id="quiz">
     <div class="row"><h2>2. Le grand quiz de la soirée</h2><span class="state" id="q-state">À remplir</span></div>
     <p class="msg">Coche tout ce qui te tente, autant de choix que tu veux. Tu peux aussi ajouter tes propres idées.</p>
+    <label class="opt absent"><input type="checkbox" id="absent"><span>Je ne serai pas au dîner, je fais juste mon update</span></label>
+    <input type="hidden" name="Présence au dîner" id="presence" value="Vient au dîner">
+    <p class="msg ok" id="absent-msg" hidden>Pas de souci ! Ton update suffit, tu peux passer directement à l'envoi.</p>
     <div class="q" id="q-body"></div>
     <p class="msg" id="q-msg" role="status"></p>
     <button type="button" class="save" id="save-q">Enregistrer mes choix</button>
@@ -206,7 +210,7 @@ button:disabled{opacity:.55;cursor:default}
 
   <section class="card send" id="send">
     <h2>3. On envoie tout</h2>
-    <p class="msg" id="send-hint">Enregistre d'abord ton update et tes choix, puis envoie tout d'un coup.</p>
+    <p class="msg" id="send-hint">Enregistre d'abord ton update et tes choix (ou coche « Je ne serai pas au dîner »), puis envoie tout d'un coup.</p>
     <button type="submit" id="send-btn" disabled>Tout envoyer à l'organisatrice</button>
     <p class="msg" id="send-msg" role="status"></p>
   </section>
@@ -307,7 +311,11 @@ function refreshQuiz(){
 body.addEventListener("change", refreshQuiz); refreshQuiz();
 $("all-form").addEventListener("submit", e => {
   if (e.defaultPrevented) return;
+  const away = $("absent").checked;
+  $("presence").value = away ? "Ne vient pas au dîner (update seulement)" : "Vient au dîner";
+  $("next-url").value = new URL("merci.html" + (away ? "?absent=1" : ""), location.href).href;
   body.querySelectorAll("[data-collect]").forEach(h => {
+    if (away) { h.value = "-"; return; }
     const k = h.dataset.collect;
     const vals = [...body.querySelectorAll('input[data-group="' + k + '"]:checked')].map(c => c.value);
     const other = body.querySelector('[data-other="' + k + '"]');
@@ -368,7 +376,7 @@ function setState(k, ok){
   $("send-hint").textContent = both ? "Tout est prêt. Tu peux encore modifier, pense juste à réenregistrer." : "Enregistre d'abord ton update et tes choix, puis envoie tout d'un coup.";
 }
 function draft(){
-  const d = {name: $("u-name").value, text: $("u-text").value, checks: [], texts: {}};
+  const d = {name: $("u-name").value, text: $("u-text").value, checks: [], texts: {}, absent: $("absent").checked};
   body.querySelectorAll("input[data-group]:checked").forEach(c => d.checks.push(c.dataset.group + "|" + c.value));
   body.querySelectorAll('input[type=text]').forEach(i => d.texts[i.dataset.other || i.name] = i.value);
   try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
@@ -400,6 +408,19 @@ $("save-q").onclick = () => {
 };
 ["u-name", "u-text"].forEach(id => $(id).addEventListener("input", () => { if (saved.u) { setState("u", false); $("u-msg").className = "msg"; $("u-msg").textContent = "Modifié : pense à réenregistrer."; } }));
 body.addEventListener("input", () => { if (saved.q) { setState("q", false); $("q-msg").className = "msg"; $("q-msg").textContent = "Modifié : pense à réenregistrer."; } });
+function applyAbsent(){
+  const away = $("absent").checked;
+  body.hidden = away; $("save-q").hidden = away; $("absent-msg").hidden = !away; $("q-msg").textContent = "";
+  body.querySelectorAll('input[name="Thème"]').forEach(i => i.disabled = away || i.closest("[data-key]").hidden);
+  setState("q", away);
+  if (away) $("q-state").textContent = "Pas au dîner ✓";
+}
+$("absent").addEventListener("change", () => {
+  applyAbsent();
+  try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); d.absent = $("absent").checked; localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
+  if ($("absent").checked && saved.u) setTimeout(() => $("send").scrollIntoView({behavior: "smooth", block: "center"}), 350);
+});
+try { if ((JSON.parse(localStorage.getItem(KEY) || "{}")).absent) { $("absent").checked = true; applyAbsent(); } } catch (e) {}
 $("all-form").addEventListener("submit", e => { if (!(saved.u && saved.q)) e.preventDefault(); }, true);
 </script>
 </body>

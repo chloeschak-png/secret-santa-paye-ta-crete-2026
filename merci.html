@@ -21,12 +21,18 @@ a{font-weight:700;color:var(--fir)}
 <body>
 <main class="card">
   <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="14" width="30" height="22" rx="2" fill="#E8877A"/><rect x="18" y="14" width="5" height="22" fill="#C8922B"/><path d="M20.5 14c-3-7-11-6-8 0M20.5 14c3-7 11-6 8 0" fill="none" stroke="#C8922B" stroke-width="3" stroke-linecap="round"/></svg>
-  <h1>Merci !</h1>
-  <p class="big">Ton update et tes choix sont bien arrivés chez l'organisatrice.</p>
-  <p>On se voit le 22 décembre à 19h chez Céleste, 4 rue de Panama, 75018 Paris.</p>
+  <h1>Merci&nbsp;!</h1>
+  <p class="big" id="big">Ton update et tes choix sont bien arrivés chez l'organisatrice.</p>
+  <p id="rdv">On se voit le 22 décembre à 19h chez Céleste, 4 rue de Panama, 75018 Paris.</p>
   <p class="bisous">Bisous les jeunes</p>
   <a href="./">Revenir au site</a>
 </main>
-<script>try{localStorage.removeItem("secret-santa-brouillon")}catch(e){}</script>
+<script>
+try{localStorage.removeItem("secret-santa-brouillon")}catch(e){}
+if(new URLSearchParams(location.search).get("absent")){
+  document.getElementById("big").textContent="Ton update est bien arrivé chez l'organisatrice.";
+  document.getElementById("rdv").textContent="Dommage que tu ne sois pas là le 22, on pensera à toi pendant le diaporama\u00a0!";
+}
+</script>
 </body>
 </html>

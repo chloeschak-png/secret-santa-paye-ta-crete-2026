@@ -269,10 +269,6 @@ sync();
 // Formulaires : adresse d'envoi et retour sur la page
 $("all-form").action = FORM_URL;
 $("next-url").value = new URL("merci.html", location.href).href;
-if (new URLSearchParams(location.search).get("envoye")) {
-  const m = $("send-msg"); m.id = "merci"; m.className = "msg ok";
-  m.textContent = "Merci ! Ton update et tes choix sont bien arrivés chez l'organisatrice.";
-}
 
 // Quiz
 const body = $("q-body");
@@ -407,7 +403,6 @@ $("save-q").onclick = () => {
 ["u-name", "u-text"].forEach(id => $(id).addEventListener("input", () => { if (saved.u) { setState("u", false); $("u-msg").className = "msg"; $("u-msg").textContent = "Modifié : pense à réenregistrer."; } }));
 body.addEventListener("input", () => { if (saved.q) { setState("q", false); $("q-msg").className = "msg"; $("q-msg").textContent = "Modifié : pense à réenregistrer."; } });
 $("all-form").addEventListener("submit", e => { if (!(saved.u && saved.q)) e.preventDefault(); }, true);
-if (new URLSearchParams(location.search).get("envoye")) { try { localStorage.removeItem(KEY); } catch (e) {} }
 </script>
 </body>
 </html>

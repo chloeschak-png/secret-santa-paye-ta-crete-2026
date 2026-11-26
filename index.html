@@ -329,6 +329,8 @@ body.addEventListener("change", refreshQuiz); refreshQuiz();
 $("all-form").addEventListener("submit", e => {
   if (e.defaultPrevented) return;
   const away = $("absent").checked;
+  const who = $("u-name").value.trim() || "quelqu'un";
+  document.querySelector('input[name="_subject"]').value = "Secret Santa : réponse de " + who + (away ? " (pas au dîner)" : "") + " - " + new Date().toLocaleString("fr-FR", {day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"});
   $("presence").value = away ? "Ne vient pas au dîner (update seulement)" : "Vient au dîner";
   $("next-url").value = new URL("merci.html" + (away ? "?absent=1" : ""), location.href).href;
   body.querySelectorAll("[data-collect]").forEach(h => {

@@ -25,32 +25,22 @@ img{max-width:100%}
 .wrap{max-width:680px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(64px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:20px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.1}
 h2{font-size:1.35rem;font-weight:800;color:var(--berry)}
-h3{font-size:1.05rem;font-weight:800;margin-top:10px}
+h3{font-size:1.08rem;font-weight:800}
 p{margin:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px;min-width:0}
 .msg{font-size:.92rem;color:var(--muted)}
-.msg.err{color:var(--berry)}
+.msg.err{color:var(--berry);font-weight:700}
 .msg.ok{color:var(--fir);font-weight:700}
-label,.lbl{font-weight:700;font-size:.9rem}
-label.field{display:grid;gap:6px}
+label.field{display:grid;gap:6px;font-weight:700;font-size:.92rem}
 .hint{font-size:.85rem;color:var(--muted);font-weight:400}
-input[type=text],textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;width:100%}
-textarea{min-height:110px;resize:vertical}
+input[type=text],textarea{font:inherit;font-size:16px;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;width:100%}
+textarea{min-height:120px;resize:vertical}
 input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
-input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,.opt:focus-within{outline:3px solid var(--gold);outline-offset:2px}
-button{font:700 1rem var(--body);border:0;border-radius:999px;padding:13px 22px;cursor:pointer;background:var(--berry);color:#fff;-webkit-tap-highlight-color:transparent}
+input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,.choice:focus-within{outline:3px solid var(--gold);outline-offset:2px}
+button{font:700 1rem var(--body);border:0;border-radius:999px;padding:14px 22px;cursor:pointer;background:var(--berry);color:#fff;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 button:disabled{opacity:.55;cursor:default}
-.bisous{justify-self:center;font-family:var(--display);font-weight:900;font-variation-settings:"SOFT" 100,"WONK" 1;font-size:1.3rem;color:var(--berry);background:var(--soft);border:1.5px dashed var(--gold);border-radius:14px;padding:12px 26px;transform:rotate(-2deg);margin:4px 0 0}
-.state{font-size:.78rem;font-weight:700;border-radius:999px;padding:4px 11px;background:var(--soft);color:var(--muted);white-space:nowrap}
-.state.ok{background:var(--fir);color:var(--surface)}
-.save{background:var(--fir);justify-self:start}
-@media (max-width:560px){.save{width:100%}}
-.absent{border-style:dashed;border-color:var(--gold)}
-.already{text-align:center;border:1.5px dashed var(--gold)}
-.formwrap{display:grid;gap:inherit}
-.send{text-align:center;justify-items:center}
-.send button{width:100%;max-width:420px;font-size:1.05rem;padding:15px 22px}
-.deadline{font-weight:700;color:var(--berry);background:var(--soft);border-radius:10px;padding:10px 14px}
+button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.deadline{font-weight:700;color:var(--berry);background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.95rem}
 
 /* hero */
 .hero{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:40px 24px 26px;display:grid;gap:14px;justify-items:center;text-align:center}
@@ -76,10 +66,65 @@ button:disabled{opacity:.55;cursor:default}
 .d5{left:-10px;top:46%;width:48px!important;height:48px!important}.d6{right:-6px;top:52%;transform:rotate(-20deg)}
 .d7{left:14px;bottom:-10px}.d8{right:18px;bottom:-12px;transform:rotate(-8deg)}
 
-.jump{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.jump a{font-weight:700;font-size:.92rem;color:var(--fir);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:10px;text-align:center;text-decoration:none}
+/* call to action */
+.cta{text-align:center;justify-items:center;border:1.5px dashed var(--gold)}
+.cta p{max-width:46ch}
+.cta button{font-size:1.15rem;padding:16px 40px;box-shadow:0 4px 0 #A8352B}
+.cta button:active{transform:translateY(2px);box-shadow:0 2px 0 #A8352B}
+.already{text-align:center;border:1.5px dashed var(--gold)}
+
+/* wizard */
+.wiz{gap:16px}
+.wiz-top{display:grid;gap:8px}
+.wiz-top .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.steplbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--fir)}
+.stepnum{font-size:.85rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--soft);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--berry);border-radius:inherit;transition:width .35s ease}
+.step{display:grid;gap:14px}
+.step.enter{animation:stepin .28s ease}
+@keyframes stepin{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.step h2{font-size:1.5rem}
+.lead{color:var(--muted)}
+.group{display:grid;gap:10px}
+.group+.group{margin-top:6px;padding-top:14px;border-top:1px dashed var(--line)}
+.ghead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rule{font-size:.75rem;font-weight:700;color:var(--fir);background:var(--soft);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.choices{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:row dense;gap:10px}
+.choice{position:relative;display:flex;align-items:center;gap:10px;min-height:64px;background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;font-weight:600;line-height:1.25;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,transform .1s}
+.choice:active{transform:scale(.98)}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice .tick{flex:0 0 26px;height:26px;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;transition:all .15s}
+.choice.multi .tick{border-radius:8px}
+.choice.single .tick{border-radius:50%}
+.choice .tick svg{width:15px;height:15px;opacity:0;transform:scale(.4);transition:all .18s}
+.choice:has(input:checked){background:var(--soft);border-color:var(--berry)}
+.choice:has(input:checked) .tick{background:var(--berry);border-color:var(--berry)}
+.choice:has(input:checked) .tick svg{opacity:1;transform:none}
+.choice.wide{grid-column:1/-1}
+.toggle{border-style:dashed;border-color:var(--gold)}
+.nav-btns{display:flex;gap:10px;justify-content:space-between}
+.nav-btns button{flex:1}
+.nav-btns .ghost{flex:0 0 auto}
+.private{font-size:.85rem;font-weight:700;color:var(--fir);display:flex;gap:6px;align-items:center}
+
+/* recap */
+.recap{display:grid;gap:10px}
+.recap-item{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}
+.recap-item .ghead b{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fir)}
+.recap-item a{font-size:.85rem;font-weight:700;color:var(--berry);cursor:pointer;text-decoration:underline}
+.recap-item p{white-space:pre-wrap;overflow-wrap:anywhere}
+.send-btn{font-size:1.1rem;padding:16px 22px;box-shadow:0 4px 0 #A8352B}
+
+/* photo picker */
+.pickbtn{display:flex;align-items:center;justify-content:center;font-weight:700;border:1.5px dashed var(--gold);background:var(--bg);border-radius:999px;padding:13px 18px;cursor:pointer}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.thumbs figure{margin:0;position:relative}
+.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:8px;display:block}
+.thumbs button{position:absolute;top:2px;right:2px;width:26px;height:26px;padding:0;font-size:.9rem;background:var(--surface);color:var(--ink)}
 
 /* gallery */
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .slider{position:relative;width:min(100%,calc(70vh * .75));margin-inline:auto}
 .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;border-radius:12px;background:var(--soft);aspect-ratio:3/4;width:100%;scrollbar-width:none}
 .track::-webkit-scrollbar{display:none}
@@ -90,21 +135,6 @@ button:disabled{opacity:.55;cursor:default}
 .dots button{width:10px;height:10px;padding:0;background:var(--line)}
 .dots button.on{background:var(--berry)}
 .pos{font-size:.8rem;font-weight:700;color:var(--fir);background:var(--soft);border-radius:999px;padding:3px 10px}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-
-/* quiz */
-.q{display:grid;gap:8px}
-.opt{display:flex;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font-weight:500;-webkit-tap-highlight-color:transparent}
-.opt input{width:20px;height:20px;margin:0;accent-color:var(--berry);flex:0 0 auto}
-.opt:has(input:checked){background:var(--soft);border-color:var(--gold)}
-.other{margin-top:2px}
-
-/* photo picker */
-.pickbtn{display:flex;align-items:center;justify-content:center;font-weight:700;border:1.5px dashed var(--gold);background:var(--bg);border-radius:999px;padding:12px 18px;cursor:pointer}
-.thumbs{display:flex;gap:8px;flex-wrap:wrap}
-.thumbs figure{margin:0;position:relative}
-.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:8px;display:block}
-.thumbs button{position:absolute;top:2px;right:2px;width:26px;height:26px;padding:0;font-size:.9rem;background:var(--surface);color:var(--ink)}
 
 @media (max-width:560px){
   .wrap{gap:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
@@ -116,9 +146,11 @@ button:disabled{opacity:.55;cursor:default}
   .d2,.d7{width:28px!important;height:28px!important}
   .d5,.d6{display:none}
   .fact b{font-size:1.2rem}
-  form button[type=submit]{width:100%}
+  .step h2{font-size:1.3rem}
+  .cta button{width:100%}
 }
-@media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}}
+@media (max-width:360px){.choices{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html,.track{scroll-behavior:auto}.step.enter{animation:none}.bar i,.choice,.choice .tick,.choice .tick svg{transition:none}}
 </style>
 </head>
 <body>
@@ -128,6 +160,7 @@ button:disabled{opacity:.55;cursor:default}
     <symbol id="i-gift2" viewBox="0 0 40 40"><rect x="5" y="12" width="30" height="24" rx="2" fill="#5B6A2C"/><rect x="18" y="12" width="5" height="24" fill="#E8877A"/><rect x="5" y="21" width="30" height="5" fill="#E8877A"/><path d="M20.5 12c-3-7-11-6-8 0M20.5 12c3-7 11-6 8 0" fill="none" stroke="#E8877A" stroke-width="3" stroke-linecap="round"/></symbol>
     <symbol id="i-orn" viewBox="0 0 40 40"><rect x="17" y="3" width="6" height="5" rx="1" fill="#C8922B"/><circle cx="20" cy="23" r="15" fill="currentColor"/><g stroke="#FBF6EC" stroke-width="2" stroke-linecap="round"><path d="M20 15v16M12 23h16M14.5 17.5l11 11M25.5 17.5l-11 11"/></g></symbol>
     <symbol id="i-holly" viewBox="0 0 40 40"><path d="M20 22C14 12 6 14 3 9c2 8-1 11 4 16 4 1 9-1 13-3z" fill="#5B6A2C"/><path d="M20 22c6-10 14-8 17-13-2 8 1 11-4 16-4 1-9-1-13-3z" fill="#5B6A2C"/><circle cx="16" cy="27" r="4" fill="#D2463A"/><circle cx="24" cy="27" r="4" fill="#D2463A"/><circle cx="20" cy="33" r="4" fill="#D2463A"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
 
@@ -152,10 +185,76 @@ button:disabled{opacity:.55;cursor:default}
     </div>
   </header>
 
-  <nav class="jump" aria-label="Aller à">
-    <a href="#update">Mon update</a>
-    <a href="#quiz">Le quiz</a>
-  </nav>
+  <section class="card cta" id="cta">
+    <p>Ton update de l'année pour le diapo, puis tes votes pour ce qu'on mange, ce qu'on boit et ce qu'on fait le 22. Cinq minutes, promis.</p>
+    <button type="button" id="start">Je vote</button>
+    <p class="deadline">À envoyer avant le 11 décembre</p>
+  </section>
+
+  <section class="card already" id="already" hidden>
+    <h2>Tu as déjà voté</h2>
+    <p class="msg">Ton update et tes votes sont bien arrivés chez l'organisatrice. On ne peut voter qu'une fois. Un changement ? Écris directement à Chloé.</p>
+  </section>
+
+  <form id="all-form" class="card wiz" action="" method="POST" enctype="multipart/form-data" hidden novalidate>
+    <input type="hidden" name="_subject" value="Secret Santa : nouvelle réponse">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" id="next-url">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="Présence au dîner" id="presence" value="Vient au dîner">
+
+    <div class="wiz-top">
+      <div class="row"><span class="steplbl" id="steplbl"></span><span class="stepnum" id="stepnum"></span></div>
+      <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+    </div>
+
+    <!-- 1. Qui -->
+    <div class="step" data-step="qui" data-label="C'est qui ?">
+      <h2>Ho ho ho, c'est qui ?</h2>
+      <label class="field">Ton prénom<input type="text" id="u-name" name="Prénom" maxlength="40" autocomplete="given-name" placeholder="Ex. Céleste"></label>
+      <label class="choice multi toggle"><input type="checkbox" id="absent"><span class="tick"><svg><use href="#i-check"/></svg></span><span>Je ne serai pas au dîner, je fais juste mon update</span></label>
+      <p class="msg err" data-err hidden></p>
+    </div>
+
+    <!-- 2. Update -->
+    <div class="step" data-step="update" data-label="Ton update" hidden>
+      <h2>Ton update de l'année</h2>
+      <p class="lead">Pour le diapo de la soirée : taf, études, projets, perso, voyages. Seule l'organisatrice le lit.</p>
+      <label class="field">Tes points<span class="hint">Un point par ligne.</span><textarea id="u-text" name="Update" maxlength="3000" placeholder="Nouveau job chez…&#10;J'ai déménagé à…&#10;Mon plus beau voyage : …"></textarea></label>
+      <p class="field" style="font-weight:700;font-size:.92rem">Photos <span class="hint">(facultatif, 5 maximum)</span></p>
+      <label class="pickbtn" for="u-pick">+ Ajouter des photos</label>
+      <input type="file" id="u-pick" accept="image/*" multiple hidden>
+      <input type="file" id="u-files" name="attachment" multiple hidden>
+      <div class="thumbs" id="u-thumbs"></div>
+      <p class="msg" id="u-msg" role="status"></p>
+      <p class="msg err" data-err hidden></p>
+    </div>
+
+    <!-- 3..6 quiz steps are built by the script -->
+    <div id="quiz-steps"></div>
+
+    <!-- 7. Allergies -->
+    <div class="step" data-step="regime" data-label="Allergies" data-diner hidden>
+      <h2>Allergies et régimes</h2>
+      <p class="lead">Végé, sans gluten, allergie aux noix, phobie du chou de Bruxelles ? Dis-le ici pour que personne ne finisse au pain sec.</p>
+      <p class="private"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="#5B6A2C"/><path d="M5 7V5a3 3 0 016 0v2" fill="none" stroke="#5B6A2C" stroke-width="1.8"/></svg>Visible uniquement par l'organisatrice</p>
+      <label class="field">Facultatif<textarea id="u-diet" name="Allergies et régimes" maxlength="500" placeholder="Rien à signaler, je mange de tout"></textarea></label>
+    </div>
+
+    <!-- 8. Récap -->
+    <div class="step" data-step="recap" data-label="Récap" hidden>
+      <h2>On vérifie et on envoie ?</h2>
+      <div class="recap" id="recap"></div>
+      <button type="submit" class="send-btn" id="send-btn">Envoyer mon vote</button>
+      <p class="msg" id="send-msg" role="status"></p>
+    </div>
+
+    <div class="nav-btns" id="nav">
+      <button type="button" class="ghost" id="back">← Retour</button>
+      <button type="button" id="next">Suivant</button>
+    </div>
+  </form>
 
   <section class="card" id="gallery">
     <div class="row"><h2>Souvenirs de l'an dernier</h2><span class="pos" id="g-pos"></span></div>
@@ -167,61 +266,10 @@ button:disabled{opacity:.55;cursor:default}
     <div class="dots" id="dots"></div>
   </section>
 
-  <section class="card already" id="already" hidden>
-    <h2>Tu as déjà répondu</h2>
-    <p class="msg">Merci ! Ton update et tes choix sont bien arrivés chez l'organisatrice. On ne peut répondre qu'une seule fois. Si tu veux changer quelque chose, écris directement à Chloé.</p>
-  </section>
-
-  <form id="all-form" action="" method="POST" enctype="multipart/form-data" class="formwrap">
-  <input type="hidden" name="_subject" value="Secret Santa : nouvelle réponse">
-  <input type="hidden" name="_template" value="table">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_next" id="next-url">
-  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-
-  <section class="card" id="update">
-    <div class="row"><h2>1. Ton update de l'année</h2><span class="state" id="u-state">À remplir</span></div>
-    <p class="deadline">À envoyer avant le 11 décembre</p>
-    <p class="msg">Pendant la soirée, je présenterai un diaporama avec les nouvelles de chacun. Raconte ton année en quelques points : taf, études, projets, perso, voyages. Seule l'organisatrice reçoit ce que tu écris ici. Enregistre ton update, puis remplis le quiz : tout part ensemble à la fin.</p>
-    <div class="q">
-      <label class="field">Ton prénom<input type="text" id="u-name" name="Prénom" maxlength="40" required autocomplete="given-name"></label>
-      <label class="field">Tes points<span class="hint">Un point par ligne.</span><textarea id="u-text" name="Update" maxlength="3000" required placeholder="Nouveau job chez…&#10;J'ai déménagé à…&#10;Mon plus beau voyage : …"></textarea></label>
-      <p class="lbl">Photos <span class="hint">(facultatif, 5 maximum)</span></p>
-      <label class="pickbtn" for="u-pick">+ Ajouter des photos</label>
-      <input type="file" id="u-pick" accept="image/*" multiple hidden>
-      <input type="file" id="u-files" name="attachment" multiple hidden>
-      <div class="thumbs" id="u-thumbs"></div>
-      <p class="msg" id="u-msg" role="status"></p>
-      <button type="button" class="save" id="save-u">Enregistrer mon update</button>
-    </div>
-  </section>
-
-  <section class="card" id="quiz">
-    <div class="row"><h2>2. Le grand quiz de la soirée</h2><span class="state" id="q-state">À remplir</span></div>
-    <p class="msg">Coche tout ce qui te tente, autant de choix que tu veux. Tu peux aussi ajouter tes propres idées.</p>
-    <label class="opt absent"><input type="checkbox" id="absent"><span>Je ne serai pas au dîner, je fais juste mon update</span></label>
-    <input type="hidden" name="Présence au dîner" id="presence" value="Vient au dîner">
-    <p class="msg ok" id="absent-msg" hidden>Pas de souci ! Ton update suffit, tu peux passer directement à l'envoi.</p>
-    <div class="q" id="q-body"></div>
-    <p class="msg" id="q-msg" role="status"></p>
-    <button type="button" class="save" id="save-q">Enregistrer mes choix</button>
-  </section>
-
   <section class="card" id="courses">
     <h2>Les courses</h2>
     <p class="msg">Une fois le quiz clos, vous recevrez un lien Revolut pour envoyer votre participation. Je ferai ensuite les courses pour tout le monde avec le budget récolté, d'après les résultats du quiz.</p>
   </section>
-
-  
-
-  <section class="card send" id="send">
-    <h2>3. On envoie tout</h2>
-    <p class="msg" id="send-hint">Enregistre d'abord ton update et tes choix (ou coche « Je ne serai pas au dîner »), puis envoie tout d'un coup.</p>
-    <button type="submit" id="send-btn" disabled>Tout envoyer à l'organisatrice</button>
-    <p class="msg" id="send-msg" role="status"></p>
-  </section>
-  </form>
-
 </main>
 
 <script>
@@ -229,30 +277,36 @@ button:disabled{opacity:.55;cursor:default}
 const FORM_URL = "https://formsubmit.co/chloeschak@gmail.com";
 const PARTY = new Date(2026, 11, 22, 19, 0, 0);
 const PHOTOS = ["01","02","03","04","05","06","07","08","09","10"].map(n => "photos/" + n + ".jpg");
-const QUIZ = [
-  {key:"Dress code", title:"On fait un dress code ?", type:"radio", options:["Oui","Non"]},
-  {key:"Thème", title:"Quel thème ?", type:"text", placeholder:"Ex. Pull moche, paillettes…", showIf:["Dress code","Oui"]},
-  {key:"Apéro", title:"L'apéro", options:["3D et Chavroux","Saucisson","Olives","Fromage","Houmous","Plateau de fromages et charcuterie"]},
-  {key:"Plat principal", title:"Le plat principal", options:["Raclette","Pizzas maison","Auberge espagnole (chacun apporte un plat)","Poulet rôti et patates douces au four","Gyozas et dumplings"]},
-  {key:"Dessert", title:"Le dessert", options:["Tiramisu"]},
-  {key:"Boissons", title:"On boit quoi ?", options:["Vin blanc","Vin rouge","Bières","Cidre","Prosecco","Alcool fort"]},
-  {key:"Activités", title:"On fait quoi pendant la soirée ?", options:["Blind test","Jeux de société","Présentation PPT des updates de l'année"]}
+// Étapes du quiz, regroupées par thème
+const THEMES = [
+  {id: "dress", label: "Dress code", title: "On se déguise ?", groups: [
+    {key: "Dress code", title: "On fait un dress code ?", single: true, options: ["Oui", "Non"]},
+    {key: "Thème", title: "Quel thème ?", text: true, placeholder: "Ex. Pull moche, paillettes…", showIf: ["Dress code", "Oui"]}
+  ]},
+  {id: "manger", label: "À manger", title: "À manger", groups: [
+    {key: "Apéro", title: "L'apéro", options: ["3D et Chavroux", "Saucisson", "Olives", "Fromage", "Houmous", "Plateau de fromages et charcuterie"]},
+    {key: "Plat principal", title: "Le plat principal", options: ["Raclette", "Pizzas maison", "Auberge espagnole (chacun apporte un plat)", "Poulet rôti et patates douces au four", "Gyozas et dumplings"]},
+    {key: "Dessert", title: "Le dessert", options: ["Tiramisu"]}
+  ]},
+  {id: "boire", label: "À boire", title: "À boire", groups: [
+    {key: "Boissons", title: "On boit quoi ?", options: ["Vin blanc", "Vin rouge", "Bières", "Cidre", "Prosecco", "Alcool fort"]}
+  ]},
+  {id: "soiree", label: "Pour la soirée", title: "Pour la soirée", groups: [
+    {key: "Activités", title: "On fait quoi pendant la soirée ?", options: ["Blind test", "Jeux de société", "Présentation PPT des updates de l'année"]}
+  ]}
 ];
+const KEY = "secret-santa-brouillon", DONE_KEY = "secret-santa-envoye";
 /* ==================== */
 
 const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+const form = $("all-form");
 
-// Une seule réponse par téléphone
-const DONE_KEY = "secret-santa-envoye";
-try { if (new URLSearchParams(location.search).get("reset") === "1") localStorage.removeItem(DONE_KEY); } catch (e) {}
+// Une seule réponse par téléphone (?reset=1 pour réinitialiser)
+try { if (new URLSearchParams(location.search).get("reset") === "1") { localStorage.removeItem(DONE_KEY); localStorage.removeItem(KEY); } } catch (e) {}
 let alreadySent = false;
 try { alreadySent = !!localStorage.getItem(DONE_KEY); } catch (e) {}
-if (alreadySent) {
-  document.getElementById("all-form").hidden = true;
-  document.querySelector(".jump").hidden = true;
-  document.getElementById("already").hidden = false;
-}
-const pad = n => String(n).padStart(2, "0");
+if (alreadySent) { $("cta").hidden = true; $("already").hidden = false; }
 
 // Compte à rebours
 function tick(){
@@ -286,65 +340,144 @@ track.addEventListener("keydown", e => { if (e.key === "ArrowLeft") go(cur - 1);
 track.addEventListener("scroll", () => { const i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== cur) { cur = i; sync(); } }, {passive: true});
 sync();
 
-// Formulaires : adresse d'envoi et retour sur la page
-$("all-form").action = FORM_URL;
-$("next-url").value = new URL("merci.html", location.href).href;
-
-// Quiz
-const body = $("q-body");
-QUIZ.forEach(q => {
-  const box = document.createElement("div"); box.className = "q"; box.dataset.key = q.key;
-  const h = document.createElement("h3"); h.textContent = q.title; box.append(h);
-  if (q.type === "text") {
-    const i = document.createElement("input"); i.type = "text"; i.name = q.key; i.placeholder = q.placeholder; i.maxLength = 80; i.setAttribute("aria-label", q.title);
-    box.append(i);
-  } else {
-    q.options.forEach(o => {
-      const l = document.createElement("label"); l.className = "opt";
-      const c = document.createElement("input"); c.type = q.type === "radio" ? "radio" : "checkbox"; c.value = o; c.dataset.group = q.key;
-      if (q.type === "radio") c.name = "r-" + q.key;
-      const t = document.createElement("span"); t.textContent = o;
-      l.append(c, t); box.append(l);
-    });
-    if (q.type !== "radio") {
-      const i = document.createElement("input"); i.type = "text"; i.className = "other"; i.dataset.other = q.key; i.maxLength = 80;
-      i.placeholder = "Autre idée ?"; i.setAttribute("aria-label", "Autre idée pour " + q.title);
+// Construction des étapes du quiz
+const quizBox = $("quiz-steps");
+THEMES.forEach(t => {
+  const step = document.createElement("div");
+  step.className = "step"; step.dataset.step = t.id; step.dataset.label = t.label; step.dataset.diner = ""; step.hidden = true;
+  const h = document.createElement("h2"); h.textContent = t.title; step.append(h);
+  t.groups.forEach(g => {
+    const box = document.createElement("div"); box.className = "group"; box.dataset.key = g.key;
+    const head = document.createElement("div"); head.className = "ghead";
+    const h3 = document.createElement("h3"); h3.textContent = g.title; head.append(h3);
+    if (!g.text) { const r = document.createElement("span"); r.className = "rule"; r.textContent = g.single ? "Un seul choix" : "Plusieurs choix possibles"; head.append(r); }
+    box.append(head);
+    if (g.text) {
+      const i = document.createElement("input"); i.type = "text"; i.name = g.key; i.placeholder = g.placeholder; i.maxLength = 80; i.setAttribute("aria-label", g.title);
       box.append(i);
+    } else {
+      const grid = document.createElement("div"); grid.className = "choices";
+      g.options.forEach(o => {
+        const l = document.createElement("label"); l.className = "choice " + (g.single ? "single" : "multi") + (o.length > 24 ? " wide" : "");
+        const c = document.createElement("input"); c.type = g.single ? "radio" : "checkbox"; c.value = o; c.dataset.group = g.key;
+        if (g.single) c.name = "r-" + g.key;
+        const tk = document.createElement("span"); tk.className = "tick"; tk.innerHTML = '<svg><use href="#i-check"/></svg>';
+        const tx = document.createElement("span"); tx.textContent = o;
+        l.append(c, tk, tx); grid.append(l);
+      });
+      box.append(grid);
+      if (!g.single) {
+        const i = document.createElement("input"); i.type = "text"; i.dataset.other = g.key; i.maxLength = 80;
+        i.placeholder = "Une autre idée ? (facultatif)"; i.setAttribute("aria-label", "Autre idée pour " + g.title);
+        box.append(i);
+      }
+      const hidden = document.createElement("input"); hidden.type = "hidden"; hidden.name = g.key; hidden.dataset.collect = g.key;
+      box.append(hidden);
     }
-    const hidden = document.createElement("input"); hidden.type = "hidden"; hidden.name = q.key; hidden.dataset.collect = q.key;
-    box.append(hidden);
-  }
-  if (q.showIf) box.hidden = true;
-  body.append(box);
+    if (g.showIf) box.hidden = true;
+    step.append(box);
+  });
+  quizBox.append(step);
 });
-function refreshQuiz(){
-  QUIZ.filter(q => q.showIf).forEach(q => {
-    const [k, v] = q.showIf;
-    const on = [...body.querySelectorAll('input[data-group="' + k + '"]')].some(c => c.checked && c.value === v);
-    const box = body.querySelector('[data-key="' + q.key + '"]');
+const GROUPS = THEMES.flatMap(t => t.groups);
+function refreshShowIf(){
+  GROUPS.filter(g => g.showIf).forEach(g => {
+    const [k, v] = g.showIf;
+    const on = [...form.querySelectorAll('input[data-group="' + k + '"]')].some(c => c.checked && c.value === v);
+    const box = form.querySelector('.group[data-key="' + g.key + '"]');
     box.hidden = !on; box.querySelector("input").disabled = !on;
   });
 }
-body.addEventListener("change", refreshQuiz); refreshQuiz();
-$("all-form").addEventListener("submit", e => {
-  if (e.defaultPrevented) return;
-  const away = $("absent").checked;
-  const who = $("u-name").value.trim() || "quelqu'un";
-  document.querySelector('input[name="_subject"]').value = "Secret Santa : réponse de " + who + (away ? " (pas au dîner)" : "") + " - " + new Date().toLocaleString("fr-FR", {day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"});
-  $("presence").value = away ? "Ne vient pas au dîner (update seulement)" : "Vient au dîner";
-  $("next-url").value = new URL("merci.html" + (away ? "?absent=1" : ""), location.href).href;
-  body.querySelectorAll("[data-collect]").forEach(h => {
-    if (away) { h.value = "-"; return; }
-    const k = h.dataset.collect;
-    const vals = [...body.querySelectorAll('input[data-group="' + k + '"]:checked')].map(c => c.value);
-    const other = body.querySelector('[data-other="' + k + '"]');
-    if (other && other.value.trim()) vals.push("Autre : " + other.value.trim());
-    h.value = vals.join(", ") || "-";
+form.addEventListener("change", refreshShowIf); refreshShowIf();
+
+// Lecture des réponses
+function valuesOf(key){
+  const vals = [...form.querySelectorAll('input[data-group="' + key + '"]:checked')].map(c => c.value);
+  const other = form.querySelector('[data-other="' + key + '"]');
+  if (other && other.value.trim()) vals.push("Autre : " + other.value.trim());
+  return vals;
+}
+const away = () => $("absent").checked;
+
+// Navigation entre étapes
+const allSteps = [...form.querySelectorAll(".step")];
+const activeSteps = () => allSteps.filter(s => !(away() && s.hasAttribute("data-diner")));
+let idx = 0;
+function show(i, focus){
+  const steps = activeSteps();
+  idx = Math.max(0, Math.min(i, steps.length - 1));
+  allSteps.forEach(s => s.hidden = true);
+  const s = steps[idx];
+  s.hidden = false; s.classList.remove("enter"); void s.offsetWidth; s.classList.add("enter");
+  $("steplbl").textContent = s.dataset.label;
+  $("stepnum").textContent = "Étape " + (idx + 1) + " / " + steps.length;
+  $("bar").style.width = ((idx + 1) / steps.length * 100) + "%";
+  $("back").style.visibility = idx === 0 ? "hidden" : "visible";
+  $("nav").hidden = false;
+  $("next").hidden = s.dataset.step === "recap";
+  $("next").textContent = steps[idx + 1] && steps[idx + 1].dataset.step === "recap" ? "Voir le récap" : "Suivant";
+  if (s.dataset.step === "recap") buildRecap();
+  s.querySelectorAll("[data-err]").forEach(e => e.hidden = true);
+  if (focus) form.scrollIntoView({behavior: "smooth", block: "start"});
+  saveDraft();
+}
+function err(step, text){ const e = step.querySelector("[data-err]"); if (e) { e.textContent = text; e.hidden = false; } }
+function validate(step){
+  if (step.dataset.step === "qui" && !$("u-name").value.trim()) { err(step, "Il nous faut ton prénom, sinon le Père Noël ne saura pas qui c'est."); $("u-name").focus(); return false; }
+  if (step.dataset.step === "update" && !$("u-text").value.trim()) { err(step, "Écris au moins un petit point, même « rien de neuf, toujours aussi fabuleux »."); $("u-text").focus(); return false; }
+  return true;
+}
+$("next").onclick = () => { const s = activeSteps()[idx]; if (validate(s)) show(idx + 1, true); };
+$("back").onclick = () => show(idx - 1, true);
+$("absent").addEventListener("change", () => show(idx));
+$("start").onclick = () => { form.hidden = false; $("cta").hidden = true; show(0); form.scrollIntoView({behavior: "smooth", block: "start"}); setTimeout(() => $("u-name").focus({preventScroll: true}), 400); };
+
+// Récap
+function buildRecap(){
+  const box = $("recap"); box.replaceChildren();
+  const item = (title, text, stepId) => {
+    const d = document.createElement("div"); d.className = "recap-item";
+    const head = document.createElement("div"); head.className = "ghead";
+    const b = document.createElement("b"); b.textContent = title; head.append(b);
+    const a = document.createElement("a"); a.textContent = "Modifier"; a.tabIndex = 0; a.setAttribute("role", "button");
+    a.onclick = () => show(activeSteps().findIndex(s => s.dataset.step === stepId), true);
+    a.onkeydown = e => { if (e.key === "Enter") a.onclick(); };
+    head.append(a);
+    const p = document.createElement("p"); p.textContent = text || "-";
+    d.append(head, p); box.append(d);
+  };
+  item("Toi", $("u-name").value.trim() + (away() ? " (pas au dîner)" : ""), "qui");
+  item("Ton update", $("u-text").value.trim() + (picked.length ? "\n+ " + picked.length + " photo" + (picked.length > 1 ? "s" : "") : ""), "update");
+  if (away()) return;
+  THEMES.forEach(t => {
+    const lines = t.groups.filter(g => !(g.showIf && form.querySelector('.group[data-key="' + g.key + '"]').hidden)).map(g => {
+      const v = g.text ? (form.querySelector('input[name="' + g.key + '"]').value.trim() || "") : valuesOf(g.key).join(", ");
+      return g.title + " " + (v || "rien coché");
+    });
+    item(t.label, lines.join("\n"), t.id);
   });
-  body.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
-  if (!picked.length) $("u-files").disabled = true;
-  $("send-btn").disabled = true; $("send-btn").textContent = "Envoi en cours…"; $("send-msg").className = "msg"; $("send-msg").textContent = picked.length ? "L'envoi avec photos peut prendre jusqu'à une minute. Ne ferme pas la page, tu arriveras sur la page Merci quand c'est fini." : "L'envoi peut prendre jusqu'à 30 secondes. Ne ferme pas la page, tu arriveras sur la page Merci quand c'est fini.";
-});
+  item("Allergies et régimes", $("u-diet").value.trim() || "Rien à signaler", "regime");
+}
+
+// Brouillon gardé sur le téléphone (retour en arrière, page fermée)
+function saveDraft(){
+  const d = {name: $("u-name").value, text: $("u-text").value, diet: $("u-diet").value, absent: away(), checks: [], texts: {}};
+  form.querySelectorAll("input[data-group]:checked").forEach(c => d.checks.push(c.dataset.group + "|" + c.value));
+  form.querySelectorAll('.group input[type=text]').forEach(i => d.texts[i.dataset.other || i.name] = i.value);
+  try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
+}
+try {
+  const d = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (d && !alreadySent) {
+    $("u-name").value = d.name || ""; $("u-text").value = d.text || ""; $("u-diet").value = d.diet || ""; $("absent").checked = !!d.absent;
+    form.querySelectorAll("input[data-group]").forEach(c => c.checked = (d.checks || []).includes(c.dataset.group + "|" + c.value));
+    form.querySelectorAll('.group input[type=text]').forEach(i => { const v = (d.texts || {})[i.dataset.other || i.name]; if (v) i.value = v; });
+    refreshShowIf();
+  }
+} catch (e) {}
+form.addEventListener("input", saveDraft);
+form.addEventListener("change", saveDraft);
+form.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT") { e.preventDefault(); if (!$("next").hidden) $("next").click(); } });
 
 // Photos de l'update : compression puis ajout au formulaire
 let picked = [];
@@ -384,63 +517,32 @@ $("u-pick").addEventListener("change", async e => {
   syncFiles();
 });
 
-// Étapes : enregistrer l'update, puis le quiz, puis tout envoyer
-const saved = {u: false, q: false};
-const KEY = "secret-santa-brouillon";
-function setState(k, ok){
-  saved[k] = ok;
-  const el = $(k + "-state"); el.textContent = ok ? "Enregistré ✓" : "À remplir"; el.classList.toggle("ok", ok);
-  const both = saved.u && saved.q;
-  $("send-btn").disabled = !both;
-  $("send-hint").textContent = both ? "Tout est prêt. Tu peux encore modifier, pense juste à réenregistrer." : "Enregistre d'abord ton update et tes choix, puis envoie tout d'un coup.";
-}
-function draft(){
-  const d = {name: $("u-name").value, text: $("u-text").value, checks: [], texts: {}, absent: $("absent").checked};
-  body.querySelectorAll("input[data-group]:checked").forEach(c => d.checks.push(c.dataset.group + "|" + c.value));
-  body.querySelectorAll('input[type=text]').forEach(i => d.texts[i.dataset.other || i.name] = i.value);
-  try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
-}
-try {
-  const d = JSON.parse(localStorage.getItem(KEY) || "null");
-  if (d) {
-    $("u-name").value = d.name || ""; $("u-text").value = d.text || "";
-    body.querySelectorAll("input[data-group]").forEach(c => c.checked = (d.checks || []).includes(c.dataset.group + "|" + c.value));
-    body.querySelectorAll('input[type=text]').forEach(i => { const v = (d.texts || {})[i.dataset.other || i.name]; if (v) i.value = v; });
-    refreshQuiz();
-  }
-} catch (e) {}
-$("save-u").onclick = () => {
-  const name = $("u-name"), text = $("u-text");
-  if (!name.value.trim()) { name.reportValidity(); name.focus(); return; }
-  if (!text.value.trim()) { text.reportValidity(); text.focus(); return; }
-  draft(); setState("u", true);
-  $("u-msg").className = "msg ok"; $("u-msg").textContent = "Update enregistré. Passe au quiz !";
-  setTimeout(() => $("quiz").scrollIntoView({behavior: "smooth", block: "start"}), 350);
-};
-$("save-q").onclick = () => {
-  const any = body.querySelector("input[data-group]:checked") || [...body.querySelectorAll('input[type=text]')].some(i => i.value.trim());
-  if (!any) { $("q-msg").className = "msg err"; $("q-msg").textContent = "Coche au moins un choix avant d'enregistrer."; return; }
-  draft(); setState("q", true);
-  $("q-msg").className = "msg ok"; $("q-msg").textContent = "Choix enregistrés.";
-  if (!saved.u) { $("q-msg").textContent = "Choix enregistrés. Il te reste à enregistrer ton update, juste au-dessus."; return; }
-  setTimeout(() => $("send").scrollIntoView({behavior: "smooth", block: "center"}), 350);
-};
-["u-name", "u-text"].forEach(id => $(id).addEventListener("input", () => { if (saved.u) { setState("u", false); $("u-msg").className = "msg"; $("u-msg").textContent = "Modifié : pense à réenregistrer."; } }));
-body.addEventListener("input", () => { if (saved.q) { setState("q", false); $("q-msg").className = "msg"; $("q-msg").textContent = "Modifié : pense à réenregistrer."; } });
-function applyAbsent(){
-  const away = $("absent").checked;
-  body.hidden = away; $("save-q").hidden = away; $("absent-msg").hidden = !away; $("q-msg").textContent = "";
-  body.querySelectorAll('input[name="Thème"]').forEach(i => i.disabled = away || i.closest("[data-key]").hidden);
-  setState("q", away);
-  if (away) $("q-state").textContent = "Pas au dîner ✓";
-}
-$("absent").addEventListener("change", () => {
-  applyAbsent();
-  try { const d = JSON.parse(localStorage.getItem(KEY) || "{}"); d.absent = $("absent").checked; localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) {}
-  if ($("absent").checked && saved.u) setTimeout(() => $("send").scrollIntoView({behavior: "smooth", block: "center"}), 350);
+// Envoi : une seule fois, même en tapant deux fois
+form.action = FORM_URL;
+let sending = false;
+form.addEventListener("submit", e => {
+  if (sending || alreadySent) { e.preventDefault(); return; }
+  const steps = activeSteps();
+  const bad = steps.find(s => !validate(s));
+  if (bad) { e.preventDefault(); show(steps.indexOf(bad), true); validate(bad); return; }
+  sending = true;
+  const a = away();
+  const who = $("u-name").value.trim();
+  form.querySelector('input[name="_subject"]').value = "Secret Santa : réponse de " + who + (a ? " (pas au dîner)" : "") + " - " + new Date().toLocaleString("fr-FR", {day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"});
+  $("presence").value = a ? "Ne vient pas au dîner (update seulement)" : "Vient au dîner";
+  $("next-url").value = new URL("merci.html" + (a ? "?absent=1" : ""), location.href).href;
+  form.querySelectorAll("[data-collect]").forEach(h => { h.value = a ? "-" : (valuesOf(h.dataset.collect).join(", ") || "-"); });
+  if (a) { form.querySelectorAll('.group input[name="Thème"]').forEach(i => i.disabled = true); $("u-diet").disabled = true; }
+  else if (!$("u-diet").value.trim()) $("u-diet").value = "Rien à signaler";
+  form.querySelectorAll("input[type=radio]").forEach(r => r.disabled = true);
+  if (!picked.length) $("u-files").disabled = true;
+  $("send-btn").disabled = true; $("back").disabled = true;
+  $("send-btn").textContent = "Le lutin court…";
+  $("send-msg").className = "msg";
+  $("send-msg").textContent = picked.length ? "Envoi avec photos, ça peut prendre jusqu'à une minute. Ne ferme pas la page." : "Ça peut prendre jusqu'à 30 secondes. Ne ferme pas la page.";
 });
-try { if ((JSON.parse(localStorage.getItem(KEY) || "{}")).absent) { $("absent").checked = true; applyAbsent(); } } catch (e) {}
-$("all-form").addEventListener("submit", e => { if (!(saved.u && saved.q)) e.preventDefault(); }, true);
+// Retour arrière du navigateur après envoi : on remet la page à zéro proprement
+window.addEventListener("pageshow", e => { if (e.persisted) location.reload(); });
 </script>
 </body>
 </html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Récap des votes · Secret Santa</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,700..900,0..100,0..1&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* Organizer recap: same invitation palette, data-first layout */
+:root{--bg:#F1E8D6;--surface:#FBF6EC;--ink:#3F4723;--muted:#7A7357;--line:#E2D5BC;--fir:#5B6A2C;--berry:#D2463A;--gold:#C8922B;--soft:#F2D9C4;--display:"Fraunces",Georgia,serif;--body:"DM Sans",system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}
+[hidden]{display:none!important}
+.wrap{max-width:760px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-right,0px)) 60px max(16px,env(safe-area-inset-left,0px));display:grid;gap:18px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+h1{font-weight:900;font-variation-settings:"SOFT" 100,"WONK" 1;color:var(--berry);font-size:clamp(1.9rem,8vw,2.6rem)}
+h2{color:var(--berry);font-size:1.3rem}
+h3{font-size:1.02rem}
+p{margin:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px;min-width:0}
+.msg{color:var(--muted);font-size:.92rem}
+textarea{font:inherit;font-size:15px;width:100%;min-height:160px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:12px}
+button{font:700 1rem var(--body);border:0;border-radius:999px;padding:13px 22px;cursor:pointer;background:var(--berry);color:#fff}
+button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.kpi b{display:block;font-family:var(--display);font-size:1.8rem;color:var(--berry);font-variant-numeric:tabular-nums;line-height:1}
+.kpi span{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.summary{display:grid;gap:8px}
+.sline{display:grid;grid-template-columns:minmax(110px,32%) 1fr;gap:10px;align-items:baseline;padding:10px 12px;background:var(--bg);border-radius:10px}
+.sline b{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fir)}
+.tie{display:inline-block;font-size:.72rem;font-weight:700;background:var(--gold);color:#fff;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.lead{display:inline-block;font-size:.72rem;font-weight:700;background:var(--berry);color:#fff;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.q{display:grid;gap:8px}
+.q+.q{padding-top:12px;border-top:1px dashed var(--line)}
+.opt{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.opt .name{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.opt .n{font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted)}
+.opt .bar{grid-column:1/-1;height:8px;background:var(--soft);border-radius:999px;overflow:hidden}
+.opt .bar i{display:block;height:100%;background:var(--line);border-radius:inherit}
+.opt.top .bar i{background:var(--berry)}
+.opt.top.isTie .bar i{background:var(--gold)}
+.opt.top .n{color:var(--berry)}
+ul{margin:0;padding-left:1.2em}
+li{overflow-wrap:anywhere}
+.lock{font-size:.85rem;font-weight:700;color:var(--fir)}
+@media (max-width:520px){.kpis{grid-template-columns:1fr 1fr 1fr}.sline{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="card">
+    <h1>Récap des votes</h1>
+    <p class="lock">Page réservée à l'organisatrice. Rien n'est envoyé ni enregistré en ligne : tout reste sur ton appareil.</p>
+    <p class="msg">Dans Gmail, ouvre chaque e-mail « Secret Santa : réponse de… », sélectionne tout le texte, copie-le et colle-le ci-dessous. Tu peux coller tous les e-mails à la suite.</p>
+    <label for="paste" class="msg" style="font-weight:700;color:var(--ink)">Les e-mails reçus</label>
+    <textarea id="paste" placeholder="Colle ici le texte de tes e-mails FormSubmit…"></textarea>
+    <div class="btns"><button type="button" id="go">Calculer le récap</button><button type="button" class="ghost" id="clear">Tout effacer</button></div>
+    <p class="msg" id="status" role="status"></p>
+  </header>
+
+  <section id="out" hidden>
+    <div class="card">
+      <h2>La soirée en un coup d'œil</h2>
+      <div class="kpis">
+        <div class="kpi"><b id="k-all">0</b><span>réponses</span></div>
+        <div class="kpi"><b id="k-in">0</b><span>au dîner</span></div>
+        <div class="kpi"><b id="k-out">0</b><span>update seul</span></div>
+      </div>
+      <div class="summary" id="summary"></div>
+    </div>
+    <div class="card" id="details"><h2>Le détail des votes</h2></div>
+    <div class="card"><h2>Allergies et régimes</h2><div id="diets"></div></div>
+    <div class="card"><h2>Idées en plus et thèmes proposés</h2><div id="ideas"></div></div>
+    <div class="card"><h2>Qui a répondu</h2><div id="people"></div></div>
+  </section>
+</main>
+<script>
+const THEMES = [
+  {label: "Dress code", keys: ["Dress code"]},
+  {label: "À manger", keys: ["Apéro", "Plat principal", "Dessert"]},
+  {label: "À boire", keys: ["Boissons"]},
+  {label: "Pour la soirée", keys: ["Activités"]}
+];
+const OPTIONS = {
+  "Dress code": ["Oui", "Non"],
+  "Apéro": ["3D et Chavroux", "Saucisson", "Olives", "Fromage", "Houmous", "Plateau de fromages et charcuterie"],
+  "Plat principal": ["Raclette", "Pizzas maison", "Auberge espagnole (chacun apporte un plat)", "Poulet rôti et patates douces au four", "Gyozas et dumplings"],
+  "Dessert": ["Tiramisu"],
+  "Boissons": ["Vin blanc", "Vin rouge", "Bières", "Cidre", "Prosecco", "Alcool fort"],
+  "Activités": ["Blind test", "Jeux de société", "Présentation PPT des updates de l'année"]
+};
+const FIELDS = ["Prénom", "Présence au dîner", "Update", "Thème", "Allergies et régimes"].concat(Object.keys(OPTIONS));
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+// Lit le texte collé et retrouve chaque réponse
+function parse(text){
+  const lines = text.replace(/\r/g, "").split("\n").map(l => l.replace(/ /g, " ").trim());
+  const people = []; let cur = null;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]; if (!line) continue;
+    for (const f of FIELDS) {
+      if (line === f || line.startsWith(f + "\t") || line.startsWith(f + " :") || line.startsWith(f + ":")) {
+        let v = line.slice(f.length).replace(/^[\t :]+/, "").trim();
+        if (!v) { let j = i + 1; while (j < lines.length && !lines[j]) j++; if (j < lines.length && !FIELDS.includes(lines[j])) { v = lines[j]; i = j; } }
+        if (f === "Prénom") { cur = {"Prénom": v}; people.push(cur); }
+        else if (cur && !(f in cur)) cur[f] = v;
+        break;
+      }
+    }
+  }
+  // Une seule réponse par prénom : la dernière reçue compte
+  const byName = new Map();
+  people.filter(p => p["Prénom"]).forEach(p => byName.set(p["Prénom"].toLowerCase(), p));
+  return [...byName.values()];
+}
+const split = v => (v || "").split(/,\s*(?![^()]*\))/).map(s => s.trim()).filter(s => s && s !== "-");
+const isAway = p => /ne vient pas/i.test(p["Présence au dîner"] || "");
+
+function render(people){
+  const diners = people.filter(p => !isAway(p));
+  $("k-all").textContent = people.length; $("k-in").textContent = diners.length; $("k-out").textContent = people.length - diners.length;
+  const summary = $("summary"); summary.replaceChildren();
+  const details = $("details"); details.replaceChildren(el("h2", null, "Le détail des votes"));
+  const extras = [];
+  THEMES.forEach(t => {
+    const block = el("div", "q"); block.append(el("h3", null, t.label));
+    t.keys.forEach(k => {
+      const counts = new Map(OPTIONS[k].map(o => [o, 0]));
+      diners.forEach(p => split(p[k]).forEach(v => {
+        if (v.startsWith("Autre :")) extras.push(k + " : " + v.slice(7).trim() + " (" + p["Prénom"] + ")");
+        else counts.set(v, (counts.get(v) || 0) + 1);
+      }));
+      const rows = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+      const max = rows.length ? rows[0][1] : 0;
+      const top = rows.filter(r => r[1] === max && max > 0);
+      const tie = top.length > 1;
+      if (t.keys.length > 1) block.append(el("p", "msg", k));
+      rows.forEach(([name, n]) => {
+        const o = el("div", "opt" + (n === max && max > 0 ? " top" : "") + (tie ? " isTie" : ""));
+        const nm = el("span", "name", name);
+        if (n === max && max > 0) nm.append(el("span", tie ? "tie" : "lead", tie ? "Égalité" : "En tête"));
+        const c = el("span", "n", n + " vote" + (n > 1 ? "s" : ""));
+        const bar = el("span", "bar"); const i = el("i"); i.style.width = (max ? n / max * 100 : 0) + "%"; bar.append(i);
+        o.append(nm, c, bar); block.append(o);
+      });
+      const line = el("div", "sline"); line.append(el("b", null, k));
+      const val = el("span");
+      if (!max) val.textContent = "Pas encore de vote";
+      else { val.textContent = top.map(r => r[0]).join(" / ") + " (" + max + " vote" + (max > 1 ? "s" : "") + ")"; if (tie) val.append(el("span", "tie", "Égalité")); }
+      line.append(val); summary.append(line);
+    });
+    details.append(block);
+  });
+  const themes = diners.map(p => [p["Prénom"], (p["Thème"] || "").trim()]).filter(x => x[1] && x[1] !== "-");
+  const ideas = $("ideas"); ideas.replaceChildren();
+  const all = themes.map(x => "Thème : " + x[1] + " (" + x[0] + ")").concat(extras);
+  if (all.length) { const ul = el("ul"); all.forEach(s => ul.append(el("li", null, s))); ideas.append(ul); } else ideas.append(el("p", "msg", "Aucune idée en plus pour l'instant."));
+  const diets = $("diets"); diets.replaceChildren();
+  const d = diners.filter(p => p["Allergies et régimes"] && !/^(-|rien à signaler)$/i.test(p["Allergies et régimes"].trim()));
+  if (d.length) { const ul = el("ul"); d.forEach(p => ul.append(el("li", null, p["Prénom"] + " : " + p["Allergies et régimes"]))); diets.append(ul); } else diets.append(el("p", "msg", "Personne n'a signalé d'allergie ou de régime."));
+  const pp = $("people"); pp.replaceChildren();
+  pp.append(el("p", null, "Au dîner : " + (diners.map(p => p["Prénom"]).join(", ") || "personne pour l'instant")));
+  const aw = people.filter(isAway);
+  pp.append(el("p", "msg", "Update seulement : " + (aw.map(p => p["Prénom"]).join(", ") || "personne")));
+  $("out").hidden = false;
+}
+function run(){
+  const text = $("paste").value;
+  try { localStorage.setItem("secret-santa-recap", text); } catch (e) {}
+  const people = parse(text);
+  $("status").textContent = people.length ? people.length + " réponse" + (people.length > 1 ? "s" : "") + " trouvée" + (people.length > 1 ? "s" : "") + "." : "Je ne trouve aucune réponse. Vérifie que tu as bien collé le texte des e-mails, avec la ligne « Prénom ».";
+  if (people.length) render(people); else $("out").hidden = true;
+}
+$("go").onclick = run;
+$("clear").onclick = () => { $("paste").value = ""; try { localStorage.removeItem("secret-santa-recap"); } catch (e) {} $("out").hidden = true; $("status").textContent = ""; };
+try { const t = localStorage.getItem("secret-santa-recap"); if (t) { $("paste").value = t; run(); } } catch (e) {}
+</script>
+</body>
+</html>

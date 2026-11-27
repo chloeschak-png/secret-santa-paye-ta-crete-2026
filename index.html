@@ -185,6 +185,16 @@ button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--li
     </div>
   </header>
 
+  <section class="card" id="gallery">
+    <div class="row"><h2>Souvenirs de l'an dernier</h2><span class="pos" id="g-pos"></span></div>
+    <div class="slider">
+      <div class="track" id="track" tabindex="0" aria-label="Photos de l'an dernier"></div>
+      <button type="button" class="nav prev" id="g-prev" aria-label="Photo précédente">‹</button>
+      <button type="button" class="nav next" id="g-next" aria-label="Photo suivante">›</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
   <section class="card cta" id="cta">
     <p>Ton update de l'année pour le diapo, puis tes votes pour ce qu'on mange, ce qu'on boit et ce qu'on fait le 22. Cinq minutes, promis.</p>
     <button type="button" id="start">Je vote</button>
@@ -255,15 +265,6 @@ button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--li
     </div>
   </form>
 
-  <section class="card" id="gallery">
-    <div class="row"><h2>Souvenirs de l'an dernier</h2><span class="pos" id="g-pos"></span></div>
-    <div class="slider">
-      <div class="track" id="track" tabindex="0" aria-label="Photos de l'an dernier"></div>
-      <button type="button" class="nav prev" id="g-prev" aria-label="Photo précédente">‹</button>
-      <button type="button" class="nav next" id="g-next" aria-label="Photo suivante">›</button>
-    </div>
-    <div class="dots" id="dots"></div>
-  </section>
 
   <section class="card" id="courses">
     <h2>Les courses</h2>
